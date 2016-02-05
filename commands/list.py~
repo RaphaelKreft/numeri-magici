@@ -1,0 +1,10 @@
+
+import glob
+
+def list():
+    print("#####Text-Files(.txt)#####")
+    files = glob.glob("*.txt")
+    print(str(files))
+    print("#####Compressed-Files(.dat.gz)#####")
+    data = glob.glob("*.dat.gz")
+    print(str(data))

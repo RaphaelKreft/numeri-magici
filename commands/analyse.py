@@ -1,0 +1,110 @@
+
+import gzip
+import glob
+import os
+import threading
+from time import *
+
+
+def analysis(fileName, filepointer):
+    """
+    This function reads the series of numbers, analyse it and write the results
+    in the Result.txt
+
+    Args:       fileName    Name of file, to be analysed
+
+    Returns:    -
+    """
+
+
+    def Output(dic):
+        """
+        This function converts a dictionary into a string to write in a File
+
+        Args:       dic             dictionary to convert
+
+        Returns:    outputstring    generated Outputstring
+        """
+        outputstring = ""
+        for i in range(0,10):
+            outputstring = outputstring + str(dic[i]) + "/"
+        return outputstring
+
+
+    def Sf(liste):
+        """
+        This function finds the normal-series_of_numbers
+
+        Args:   liste   The list of numbers to search for End-seq
+
+        """
+        Standartfolge = None
+        for i in range(0,len(liste)):
+            if liste[i] == liste[i -1]:
+                Standartfolge = liste[i]
+                k = int(i)
+                break
+        return str(Standartfolge), k
+
+    # read data from file and close it
+    f = gzip.open(str(fileName),"rb")
+    lines = f.readlines()
+    f.close()
+
+    numbers = []
+    filepointer.write(str(fileName) + "\t\t")
+
+    for line in lines:
+        if line.startswith(bytes("#", "utf-8")):
+            pass
+        else:
+            line = line.replace(bytes("\n","utf-8"),bytes("","utf-8"))
+            split = line.split(bytes(":","utf-8"))
+
+            run = int(str(split[0],"utf-8"))
+            #Write first Mutation
+            if run == 1:
+                filepointer.write(number + "\t\t")
+            number = str(split[1],"utf-8")
+            numbers.append(number)
+
+
+    Standartfolge, k = Sf(numbers)
+    filepointer.write(str(Standartfolge) + "\t\t")
+    filepointer.write(str(k) + "\n\n")
+    print("finished counting of  " + str(fileName))
+    return k, Standartfolge
+
+
+def analyse():
+    """
+    analyse all Files
+
+    Args:       -
+
+    Returns:    -
+    """
+    print("Starting Analysis...")
+    t_start = clock()
+    Sf_ratio = [[0 for x in range(2)] for i in range(15)]
+    result_file = open("Result", "w")
+    result_file.write("\t\t\t\t" + "first Mutation"  + "\t\t\t\t" +"Standartfolge" + "\t\t\t" + "Stelle(k)" + "\n\n")
+    os.chdir("data")
+    files = glob.glob("*.dat.gz")
+    files.sort()
+
+    for filename in files:
+        k, sf = analysis(filename ,result_file)
+        if sf == "15030001000100000000":
+            Sf_ratio[int(k)][0] += 1
+        elif sf == "15020200000100000000":
+            Sf_ratio[int(k)][1] += 1
+
+    result_file.write("\tStandartfolgenverteilung\n\nA\tB\n\n")
+    for i in range(15):
+        result_file.write(str(Sf_ratio[i][0]) + "\t" + str(Sf_ratio[i][1]) + "\n")
+    result_file.close()
+    t_end = clock()
+    t = t_end - t_start
+    print("\n*****Done*****")
+    print("computing-Time: " + str(t) + " sec")
