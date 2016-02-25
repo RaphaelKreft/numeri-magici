@@ -1,16 +1,34 @@
-# import necessary modules
-import zlib
-import gzip
-import sys
-import os
-import datetime
-from time import *
-import random
+# -*- coding: utf-8 -*-
 
-from commands import pwd
+"""new_count.py:    This file is a Part of the "Ziffernzählmaschiene-Simulation"
+                    It Contains the functionality to count the digits. For more Information read our scientific
+                    publication or look at the docstring. This module will be imported by the shell.py
+"""
+
+__author__ = "Raphael Kreft"
+__copyright__ = "Copyright 2016, numeri magici"
+__credits__ = "produced by Raphael Kreft. The Simulation is part of a scientific" \
+              "work named 'Die Ziffernzählmaschiene - numeri magici'. The writed" \
+              "Version is aviable at: www.bitbuckit.org/Cbetron/numeri_magici"
+
+__license__ = " - "
+__version__ = "1.1"
+__email__ = "kreft@phaenovum.de"
+__status__ = "Production"
+
+# import system-modules
+import datetime
+import gzip
+import os
+import random
+from time import *
+# import commands
 from commands import cd
+from commands import pwd
+
 # init random-generator
 random.seed()
+
 
 def new_count():
     """
@@ -20,16 +38,18 @@ def new_count():
 
     Returns:    -
     """
+
+    global number_of_files
+
     def normal_counting():
         for i in range(beginning, ending):
             print(str(i) + " of " + str(number_of_files))
             series_of_numbers = generate_series_of_numbers(i)
             print("Init: " + str(series_of_numbers))
-            mutations = {}
-            mutations[0] = count(series_of_numbers)
+            mutations = {0: count(series_of_numbers)}
             print("calculate...")
-            for i in range(1, sequences +1 , 1):
-                num_str = toString(mutations[i - 1])
+            for i in range(1, sequences + 1, 1):
+                num_str = tostring(mutations[i - 1])
                 mutations[i] = count(num_str)
             print("export mutations: " + str(series_of_numbers))
             export_mutations(series_of_numbers, mutations)
@@ -37,24 +57,23 @@ def new_count():
     def random_counting():
         for i in range(0, number_of_files):
             print(str(i) + " of " + str(number_of_files))
-            series_of_numbers = generate_series_of_numbers(random.randint(0,99999999999999999999))
+            series_of_numbers = generate_series_of_numbers(random.randint(0, 99999999999999999999))
             print("Init: " + str(series_of_numbers))
-            mutations = {}
-            mutations[0] = count(series_of_numbers)
+            mutations = {0: count(series_of_numbers)}
             print("calculate...")
-            for i in range(1, sequences +1 , 1):
-                num_str = toString(mutations[i - 1])
+            for i in range(1, sequences + 1, 1):
+                num_str = tostring(mutations[i - 1])
                 mutations[i] = count(num_str)
             print("export mutations: " + str(series_of_numbers))
             export_mutations(series_of_numbers, mutations)
 
     # get informations and parameters for counting
     while True:
-        Name = input("Chose a name for this Counting: ")
+        name = input("Chose a name for this Counting: ")
         print("Ordner für Zählung wird erzeugt..")
         try:
-            os.mkdir(Name)
-            cd.change_directory(str(Name))
+            os.mkdir(name)
+            cd.change_directory(str(name))
             os.mkdir("data")
             break
         except IOError:
@@ -79,7 +98,7 @@ def new_count():
     print("You want to count " + str(number_of_files) + " Numbers!")
     sequences = int(input_number_of_sequences())
 
-    #counting
+    # counting
     t_start = clock()
     if kindofcounting == "normal":
         normal_counting()
@@ -108,22 +127,22 @@ def export_mutations(series_of_numbers, mutations):
 
     Returns:    -
     """
-    Filename = str(series_of_numbers)  + ".dat.gz"
-    File = gzip.open(str(Filename), "wb")
+    filename = str(series_of_numbers) + ".dat.gz"
+    file = gzip.open(str(filename), "wb")
     # Write the header of the File
-    File.write(bytes("# Number: " + series_of_numbers + "\n", "utf-8"))
-    File.write(bytes("# Date: " + str(datetime.datetime.now()) + "\n", "utf-8"))
-    File.write(bytes("# Encoding:   utf-8\n", "utf-8"))
+    file.write(bytes("# Number: " + series_of_numbers + "\n", "utf-8"))
+    file.write(bytes("# Date: " + str(datetime.datetime.now()) + "\n", "utf-8"))
+    file.write(bytes("# Encoding:   utf-8\n", "utf-8"))
     # generate export-string
     export_string = ''
-    for key,val in mutations.items():
-        export_string = export_string + str(key).rjust(2, ' ') + ":" + toString(val) + "\n"
+    for key, val in mutations.items():
+        export_string = export_string + str(key).rjust(2, ' ') + ":" + tostring(val) + "\n"
     # write and close File
-    File.write(bytes(export_string,"utf-8"))
-    File.close()
+    file.write(bytes(export_string, "utf-8"))
+    file.close()
 
 
-def generate_series_of_numbers(given_number ,target_length = 20):
+def generate_series_of_numbers(given_number, target_length=20):
     """
     This function generates a series_of_numbers to count.
 
@@ -161,17 +180,17 @@ def count(series_of_numbers):
     Returns:    counter               the generated series_of_numbers
     """
     # init counter-array
-    counter = []
-    for i in range(0,10):
+    counter = {}
+    for i in range(0, 10):
         counter[i] = 0
     # count digits
     for substr in series_of_numbers:
-        counter[int(substr)] = counter[int(substr)] + 1
+        counter[int(substr)] += 1
 
     return counter
 
 
-def toString(liste):
+def tostring(liste):
     """
     This function converts a list into a String
 
@@ -180,6 +199,6 @@ def toString(liste):
     Returns:    string  The generated String
     """
     string = ''
-    for i in range(0,10):
-        string = string + str(liste[i]).rjust(2,'0')
+    for i in range(0, 10):
+        string += str(liste[i]).rjust(2, '0')
     return string

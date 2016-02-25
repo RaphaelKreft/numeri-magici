@@ -1,24 +1,33 @@
 #!/usr/bin/env python3
-# -*- encoding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-"""
-Author: Raphael Kreft
-Datum: 23.10.2015
-Version: 0.3
-
-Support: kreft@phaenovum.de
+"""shell.py:    This file is a Part of the "Ziffernzählmaschiene-Simulation"
+                It Contains the main-functionality, that means it includes the
+                Commandprompt which executes the commands from the loaded modules.
 """
 
+__author__ = "Raphael Kreft"
+__copyright__ = "Copyright 2016, numeri magici"
+__credits__ = "produced by Raphael Kreft. The Simulation is part of a scientific" \
+              "work named 'Die Ziffernzählmaschiene - numeri magici'. The writed" \
+              "Version is aviable at: www.bitbuckit.org/Cbetron/numeri_magici"
+
+__license__ = " - "
+__version__ = "1.1"
+__email__ = "kreft@phaenovum.de"
+__status__ = "Production"
+
+# import system-modules
 import os
-import time
 import sys
-#import commands for Shell
+# import commands for Shell
 from commands import new_count
 from commands import list
 from commands import cd
 from commands import analyse
 from commands import show
 from commands import pwd
+
 
 def main():
     """
@@ -28,54 +37,62 @@ def main():
 
     Returns:        -
     """
+    # check if the countings-directory exists
     print("Starting Shell...")
     print("Enter countings-directory")
-    try:
-        cd.change_directory("countings")
-    except IOError:
-        print("countings-directory doesnt exist, make directory...")
-        os.mkdir("countings")
-        cd.change_directory("countings")
+    # Try to enter countings directory
+    while True:
+        success = cd.change_directory("countings")
+        if success == 0:
+            print("entered dir successful")
+            break
+        elif success == 1:
+            print("error while entering directory, try to make dir..")
+            os.mkdir("countings")
+            print("successful")
+            continue
     # real shell in a loop
     print("'help' to show all commands")
     while True:
-        Befehl = input("--> ")
-        if Befehl == "help":
-            print("new count        makes a new count")
-            print("list             lists all files in a directory")
-            print("cd               enters a directory")
-            print("analyse          starts the analyse")
-            print("show             Shows the contents of a file")
-            print("pwd              prints the working directory")
-            print("exit             leaves the Shell")
-        elif Befehl == "new count":
+        befehl = str(input("--> "))
+        if befehl == "help":
+            helpstring = "new count        makes a new count\n" \
+                         "list             lists all files in a directory\n" \
+                         "cd               enters a directory\n" \
+                         "analyse          starts the analyse\n" \
+                         "show             Shows the contents of a file\n" \
+                         "pwd              prints the working directory\n" \
+                         "exit             leaves the Shell\n"
+            print(helpstring)
+        elif befehl == "new count":
             new_count.new_count()
             continue
-        elif Befehl == "list":
+        elif befehl == "list":
             list.list()
             continue
-        elif Befehl == "cd":
+        elif befehl == "cd":
             directory = input("which directory: ")
             cd.change_directory(directory)
             continue
-        elif Befehl == "analyse":
+        elif befehl == "analyse":
             analyse.analyse()
             continue
-        elif Befehl == "show":
+        elif befehl == "show":
             show.show()
             continue
-        elif Befehl == "pwd":
+        elif befehl == "pwd":
             pwd.print_working_directory()
             pass
             continue
-        elif Befehl == "exit":
+        elif befehl == "exit":
             print("leaving Shell...")
-            #break loop to leave Shell
+            # break loop to leave Shell
             break
         else:
             print("Thats no command, enter 'help'")
             continue
     sys.exit(0)
+
 
 if __name__ == '__main__':
     main()

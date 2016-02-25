@@ -1,7 +1,25 @@
+# -*- coding: utf-8 -*-
 
-import zlib
+"""show.py:    This file is a Part of the "Ziffernzählmaschiene-Simulation"
+               It Contains a function to show all contents of Files .It will be imported by the shell.py.
+"""
+
+__author__ = "Raphael Kreft"
+__copyright__ = "Copyright 2016, numeri magici"
+__credits__ = "produced by Raphael Kreft. The Simulation is part of a scientific" \
+              "work named 'Die Ziffernzählmaschiene - numeri magici'. The writed" \
+              "Version is aviable at: www.bitbuckit.org/Cbetron/numeri_magici"
+
+__license__ = " - "
+__version__ = "1.1"
+__email__ = "kreft@phaenovum.de"
+__status__ = "Production"
+
+
+# import system-modules
 import gzip
 import os
+
 
 def show():
     """
@@ -11,19 +29,32 @@ def show():
 
     Returns:    -
     """
-    filename = input("Filename: ")
+    filename = str(input("Filename: "))
     if os.path.exists(filename):
 
-        if filename.endswith(".dat.gz"):
-            File = gzip.open(str(filename),"rb")
-            Data = File.read()
-            print(Data)
+        if os.path.isfile(filename):
 
-        elif filename.endswith(".txt") or filename == "Result":
-            File = open(str(filename), "r")
-            Data =  File.read()
-            print(Data)
-        else:
-            print("Dies ist keine Datei")
+            print(str(filename) + " exists!")
+            if filename.endswith(".dat.gz"):
+                file = gzip.open(str(filename), "rb")
+                for line in file:
+                    print(line.rstrip())
+                print("\n\n**********Done**********")
+                return
+            elif filename.endswith(".txt") or filename == "Result":
+                file = open(str(filename), "r")
+                for line in file:
+                    print(line.rstrip())
+                print("\n\n**********Done**********")
+                return
+            else:
+                print("This File isn't compatible")
+
+        elif os.path.isdir(filename):
+            print(str(filename) + " is a directory")
+
+        elif os.path.islink(filename):
+            print(str(filename) + " is a systemlink")
     else:
-        print("Diese Datei existiert nicht")
+        print(str(filename) + " doesnt exist!")
+    return

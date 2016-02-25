@@ -2,7 +2,7 @@
 Ziffern zählen - Simulation
 
 Autor: Raphael Kreft
-Version: 1.0
+Version: 1.1
 ***************************
 
 Ausführen
@@ -27,3 +27,10 @@ Support
 --------
 
 E-Mail: raphaelkreft@gmx.de
+
+Info
+-----
+
+Die Simulation ist Teil eines JugendForscht Projekts von Nikodem Kernbach & Raphael Kreft
+
+Webseite: http://www.jugend-forscht.de/
