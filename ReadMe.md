@@ -6,8 +6,13 @@ Version: 1.1
 ### Ausführen
 ---
 
-Zum starten der Simulation die "shell.py" mit dem Pythoninterpreter ausführen
-(python3). Getestet unter Linux-Ubuntu 14.04 und 15.01.
+Python3 muss installiert sein.
+Zum starten der Simulation die "shell.py" mit python ausführen.
+Getestet unter Linux-Ubuntu 14.04 und 15.01.
+
+```
+python shell.py
+```
 
 ### Bedienung
 ---
