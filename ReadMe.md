@@ -1,18 +1,16 @@
-***************************
 Ziffern zählen - Simulation
 
 Autor: Raphael Kreft
 Version: 1.1
-***************************
 
-Ausführen
-----------
+### Ausführen
+---
 
 Zum starten der Simulation die "shell.py" mit dem Pythoninterpreter ausführen
 (python3). Getestet unter Linux-Ubuntu 14.04 und 15.01.
 
-Bedienung
-----------
+### Bedienung
+---
 
 Nach dem starten gelangen sie in eine Kommandozeilenumgebung, die sie
 mit dem Befehl "exit" wieder verlassen können.
@@ -23,13 +21,13 @@ folgen sie einfach den Anweisungen. Der Befehl "analyse" Analysiert nach dem Auf
 automatisch die durch die Zählung entstandenen Daten. Die Ergebnisse werden hierbei
 in der "Result" - Datei gespeichert.
 
-Support
---------
+### Support
+---
 
 E-Mail: raphaelkreft@gmx.de
 
-Info
------
+### Info
+---
 
 Die Simulation ist Teil eines JugendForscht Projekts von Nikodem Kernbach & Raphael Kreft
 
